@@ -1,0 +1,31 @@
+name: Demo Organization Nodejs CI
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+# both the jobs (unit testing and code coverage will run in parallel)
+
+    build:
+      name: build
+      runs-on: ubuntu-latest
+      steps: 
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Nodejs evrsion - v20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+        
+      - name: Install dependencies
+        run: npm install
+
+      - name: Unit Testing
+        run: npm test --if-present
+
+      - name: Run Coverage
+        run: npm run coverage --if-present
